@@ -17,7 +17,11 @@ LDLIBS= -levent -ltls -lssl -lcrypto -lutil -lresolv -lbsd -lcrypt
 
 OBJS= $(addsuffix .o,$(basename $(SRCS)))
 
+all: httpd
+
 httpd: $(OBJS)
 
 clean:
 	rm -f *.o openbsd-compat/*.o
+
+.PHONY: all clean
