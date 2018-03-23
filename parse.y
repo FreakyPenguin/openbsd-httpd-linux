@@ -31,7 +31,7 @@
 #include <sys/queue.h>
 #include <sys/tree.h>
 #include <sys/ioctl.h>
-#include <sys/sockio.h>
+//#include <sys/sockio.h>
 #include <sys/time.h>
 
 #include <net/if.h>
@@ -1798,7 +1798,9 @@ host_v4(const char *s)
 	if ((h = calloc(1, sizeof(*h))) == NULL)
 		fatal(__func__);
 	sain = (struct sockaddr_in *)&h->ss;
+#if 0
 	sain->sin_len = sizeof(struct sockaddr_in);
+#endif
 	sain->sin_family = AF_INET;
 	sain->sin_addr.s_addr = ina.s_addr;
 	if (sain->sin_addr.s_addr == INADDR_ANY)
@@ -1823,7 +1825,9 @@ host_v6(const char *s)
 		if ((h = calloc(1, sizeof(*h))) == NULL)
 			fatal(__func__);
 		sa_in6 = (struct sockaddr_in6 *)&h->ss;
+#if 0
 		sa_in6->sin6_len = sizeof(struct sockaddr_in6);
+#endif
 		sa_in6->sin6_family = AF_INET6;
 		memcpy(&sa_in6->sin6_addr,
 		    &((struct sockaddr_in6 *)res->ai_addr)->sin6_addr,
@@ -1892,12 +1896,16 @@ host_dns(const char *s, struct addresslist *al, int max,
 
 		if (res->ai_family == AF_INET) {
 			sain = (struct sockaddr_in *)&h->ss;
+#if 0
 			sain->sin_len = sizeof(struct sockaddr_in);
+#endif
 			sain->sin_addr.s_addr = ((struct sockaddr_in *)
 			    res->ai_addr)->sin_addr.s_addr;
 		} else {
 			sin6 = (struct sockaddr_in6 *)&h->ss;
+#if 0
 			sin6->sin6_len = sizeof(struct sockaddr_in6);
+#endif
 			memcpy(&sin6->sin6_addr, &((struct sockaddr_in6 *)
 			    res->ai_addr)->sin6_addr, sizeof(struct in6_addr));
 		}
@@ -1955,12 +1963,16 @@ host_if(const char *s, struct addresslist *al, int max,
 
 		if (af == AF_INET) {
 			sain = (struct sockaddr_in *)&h->ss;
+#if 0
 			sain->sin_len = sizeof(struct sockaddr_in);
+#endif
 			sain->sin_addr.s_addr = ((struct sockaddr_in *)
 			    p->ifa_addr)->sin_addr.s_addr;
 		} else {
 			sin6 = (struct sockaddr_in6 *)&h->ss;
+#if 0
 			sin6->sin6_len = sizeof(struct sockaddr_in6);
+#endif
 			memcpy(&sin6->sin6_addr, &((struct sockaddr_in6 *)
 			    p->ifa_addr)->sin6_addr, sizeof(struct in6_addr));
 			sin6->sin6_scope_id = ((struct sockaddr_in6 *)
@@ -2167,6 +2179,7 @@ getservice(char *n)
 int
 is_if_in_group(const char *ifname, const char *groupname)
 {
+#if 0
 	unsigned int		 len;
 	struct ifgroupreq	 ifgr;
 	struct ifg_req		*ifg;
@@ -2206,4 +2219,6 @@ is_if_in_group(const char *ifname, const char *groupname)
 end:
 	close(s);
 	return (ret);
+#endif
+        return 0;
 }

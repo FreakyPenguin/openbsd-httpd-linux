@@ -32,6 +32,7 @@
 #include <pwd.h>
 #include <event.h>
 #include <imsg.h>
+#include <grp.h>
 
 #include "httpd.h"
 

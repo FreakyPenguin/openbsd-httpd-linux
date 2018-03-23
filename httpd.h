@@ -21,6 +21,8 @@
 #ifndef _HTTPD_H
 #define _HTTPD_H
 
+#include "compat.h"
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/queue.h>

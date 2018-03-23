@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <pwd.h>
+#include <time.h>
 
 #include "httpd.h"
 
@@ -1318,7 +1319,7 @@ auth_free(struct serverauth *serverauth, struct auth *auth)
 const char *
 print_host(struct sockaddr_storage *ss, char *buf, size_t len)
 {
-	if (getnameinfo((struct sockaddr *)ss, ss->ss_len,
+	if (getnameinfo((struct sockaddr *)ss, ss_len(ss),
 	    buf, len, NULL, 0, NI_NUMERICHOST) != 0) {
 		buf[0] = '\0';
 		return (NULL);

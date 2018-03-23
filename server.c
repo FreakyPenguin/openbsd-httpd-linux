@@ -540,13 +540,17 @@ server_socket_af(struct sockaddr_storage *ss, in_port_t port)
 	switch (ss->ss_family) {
 	case AF_INET:
 		((struct sockaddr_in *)ss)->sin_port = port;
+#if 0
 		((struct sockaddr_in *)ss)->sin_len =
 		    sizeof(struct sockaddr_in);
+#endif
 		break;
 	case AF_INET6:
 		((struct sockaddr_in6 *)ss)->sin6_port = port;
+#if 0
 		((struct sockaddr_in6 *)ss)->sin6_len =
 		    sizeof(struct sockaddr_in6);
+#endif
 		break;
 	default:
 		return (-1);
@@ -636,9 +640,11 @@ server_socket(struct sockaddr_storage *ss, in_port_t port,
 				goto bad;
 			break;
 		case AF_INET6:
+#if 0
 			if (setsockopt(s, IPPROTO_IPV6, IPV6_MINHOPCOUNT,
 			    &val, sizeof(val)) == -1)
 				goto bad;
+#endif
 			break;
 		}
 	}
@@ -660,9 +666,11 @@ server_socket(struct sockaddr_storage *ss, in_port_t port,
 			val = 0;
 		else
 			val = 1;
+#if 0
 		if (setsockopt(s, IPPROTO_TCP, TCP_SACK_ENABLE,
 		    &val, sizeof(val)) == -1)
 			goto bad;
+#endif
 	}
 
 	return (s);
@@ -682,7 +690,7 @@ server_socket_listen(struct sockaddr_storage *ss, in_port_t port,
 	if ((s = server_socket(ss, port, srv_conf, -1, 1)) == -1)
 		return (-1);
 
-	if (bind(s, (struct sockaddr *)ss, ss->ss_len) == -1)
+	if (bind(s, (struct sockaddr *)ss, ss_len(ss)) == -1)
 		goto bad;
 	if (listen(s, srv_conf->tcpbacklog) == -1)
 		goto bad;
@@ -703,7 +711,7 @@ server_socket_connect(struct sockaddr_storage *ss, in_port_t port,
 	if ((s = server_socket(ss, port, srv_conf, -1, 0)) == -1)
 		return (-1);
 
-	if (connect(s, (struct sockaddr *)ss, ss->ss_len) == -1) {
+	if (connect(s, (struct sockaddr *)ss, ss_len(ss)) == -1) {
 		if (errno != EINPROGRESS)
 			goto bad;
 	}
